@@ -5,5 +5,8 @@
 - name: Install Docker
   yum: pkg=docker-io state=present
 
+- name: Provision storage configuration
+  template: src=docker-storage.j2 dest=/etc/sysconfig/docker-storage
+
 - name: Start service
   service: name=docker state=started
