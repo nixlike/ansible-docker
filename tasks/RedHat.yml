@@ -7,10 +7,20 @@
   action: command rpm -Uvh --replacepkgs http://epel.besthosting.ua/7/x86_64/e/epel-release-7-5.noarch.rpm
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
 
-- yum: name=libselinux-python state=present
+- yum: name=libselinux-python state=latest
+
+- yum: name=device-mapper-event-libs state=latest
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
 
 - name: Install Docker
-  yum: pkg=docker-io state=present
+  yum: pkg=docker-io state=latest
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+
+- name: Install Docker Centos 7
+  yum: pkg=docker state=latest
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+
+- service: name=docker state=started enabled=yes
 
 - name: Provision storage configuration
   template: src=docker-storage.j2 dest=/etc/sysconfig/docker-storage
