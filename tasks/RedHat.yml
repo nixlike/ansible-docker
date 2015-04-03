@@ -1,6 +1,13 @@
 ---
-- name: Downloading and enable the EPEL repository definitions.
+- name: Downloading and enable the EPEL repository definitions CentOS 6.
   action: command rpm -Uvh --replacepkgs http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+
+- name: Downloading and enable the EPEL repository definitions CentOS 7.
+  action: command rpm -Uvh --replacepkgs http://epel.besthosting.ua/7/x86_64/e/epel-release-7-5.noarch.rpm
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+
+- yum: name=libselinux-python state=present
 
 - name: Install Docker
   yum: pkg=docker-io state=present
